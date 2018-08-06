@@ -8,7 +8,7 @@
 	deb http://download.proxmox.com/debian/pve stretch pve-no-subscription
 	# security updates
 	deb http://security.debian.org stretch/updates main contrib
-	ETC
+	EOT
 	apt update
 
 #install tools for fan controller thanks richgannon.net
