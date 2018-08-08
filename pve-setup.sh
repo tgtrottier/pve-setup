@@ -22,13 +22,16 @@
 
 #wipe storage disks and write with ext4 
 	
-	apt-get install parted
-	for i in $((ls /dev/sd*)|grep "\/dev\/sd[c-z]$"); do
+	apt-get install parted -y
+	for i in $((ls /dev/sd*)|grep "\/dev\/sd[b-z]$"); do
 	echo item:$i;
 	parted -s -a optimal $i mklabel gpt --  mkpart primary ext4 2048s 100%
-	
 	done
 	
+	for i in $((ls /dev/sd*)|grep "\/dev\/sd[b-z]1$"); do
+	echo item:$i;
+	mkfs.ext4 $i
+	done
 # Modify fstab to mount drives to locations for mergerfs and snapraid
 	cat <<EOT >> /etc/fstab
 	 
@@ -51,6 +54,7 @@
 	mount -a
  
 #- Snapraid Install
+	apt-get install gcc make -y
 	wget https://github.com/amadvance/snapraid/releases/download/v11.2/snapraid-11.2.tar.gz
 	tar xzvf snapraid-11.2.tar.gz
 	cd snapraid-11.2/
@@ -98,4 +102,5 @@
 
 	mount -a
 	
+	#still have to modify crontab working on that
 	
